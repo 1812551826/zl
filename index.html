@@ -1,0 +1,141 @@
+# zl
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字游戏</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .game-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #2c3e50;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>猜数字游戏</h1>
+        <div class="input-container">
+            <input type="number" id="guessInput" placeholder="猜一个数字" />
+        </div>
+        <button class="button" id="submitGuessBtn">提交猜测</button>
+        <div class="message" id="message"></div>
+        <button class="reset-btn" id="resetBtn" style="display:none;">重新开始</button>
+    </div>
+
+    <script>
+        const submitGuessBtn = document.getElementById('submitGuessBtn');
+        const guessInput = document.getElementById('guessInput');
+        const message = document.getElementById('message');
+        const resetBtn = document.getElementById('resetBtn');
+
+        let randomNumber;
+        let attempts = 0;
+
+        // 随机生成 1 到 100 的数字
+        function startGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            message.textContent = '';
+            resetBtn.style.display = 'none';
+            guessInput.disabled = false;
+            submitGuessBtn.disabled = false;
+        }
+
+        // 处理猜测
+        submitGuessBtn.addEventListener('click', () => {
+            const guess = parseInt(guessInput.value);
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                message.textContent = "请输入一个有效的数字（1 到 100）。";
+                return;
+            }
+
+            attempts++;
+
+            if (guess > randomNumber) {
+                message.textContent = `太大了！你已尝试了 ${attempts} 次。再试一次！`;
+            } else if (guess < randomNumber) {
+                message.textContent = `太小了！你已尝试了 ${attempts} 次。再试一次！`;
+            } else {
+                message.textContent = `恭喜你，猜对了！你用了 ${attempts} 次猜测。`;
+                guessInput.disabled = true;
+                submitGuessBtn.disabled = true;
+                resetBtn.style.display = 'block';
+            }
+        });
+
+        // 重新开始游戏
+        resetBtn.addEventListener('click', startGame);
+
+        // 游戏开始
+        startGame();
+    </script>
+</body>
+</html>
